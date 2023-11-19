@@ -6,12 +6,11 @@ terraform {
   }
   backend "kubernetes" {
     secret_suffix = "state"
-    # config_path   = ".kubeconfig"
+    config_path   = ".kubeconfig"
   }
 
 }
 
 provider "kubernetes" {
-#   config_path   = ".kubeconfig"
-  config_context = "default"
+  config_path   = ".kubeconfig"
 }

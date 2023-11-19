@@ -62,13 +62,12 @@ resource "kubernetes_cluster_role_binding" "prometheus" {
 
 resource "kubernetes_config_map" "prometheus_yml" {
   metadata {
-    name      = "prometheus-yml-${sha1(file("${path.module}/config/prometheus.yml"))}-${sha1(file("${path.module}/config/rules.yml"))}"
+    name      = "prometheus-yml-${sha1(file("${path.module}/config/prometheus.yml"))}"
     namespace = kubernetes_namespace.monitoring.metadata.0.name
   }
 
   data = {
     "prometheus.yml" = "${file("${path.module}/config/prometheus.yml")}"
-    "rules.yml" = "${file("${path.module}/config/rules.yml")}"
   }
 }
 
@@ -174,9 +173,10 @@ resource "kubernetes_stateful_set" "prometheus" {
 
 #   spec {
 #     rule {
-#       host = "prometheus.${var.domain}"
 #       http {
 #         path {
+#           path = "/"
+#           path_type = "Prefix"
 #           backend {
 #             service {
 #               name = kubernetes_service.prometheus.metadata.0.name
@@ -190,10 +190,3 @@ resource "kubernetes_stateful_set" "prometheus" {
 #     }
 #   }
 # }
-
-module "prometheus_dns" {
-  source   = "../pi-hole-service"
-
-  record  = "prometheus.${var.domain}"
-  ingress = kubernetes_ingress_v1.prometheus_ingress
-}

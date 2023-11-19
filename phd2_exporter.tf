@@ -46,7 +46,7 @@ resource "kubernetes_deployment" "phd2_exporter" {
 
         container {
           name  = "phd2-exporter"
-          image = "ghcr.io/twinkle-astronomy/phd2_exporter:v0.2.4"
+          image = "ghcr.io/twinkle-astronomy/phd2_exporter:v0.3.0"
           image_pull_policy = "Always"
           command = ["phd2_exporter",
             "/etc/phd2_exporter/config.yaml",
@@ -86,10 +86,40 @@ resource "kubernetes_service" "phd2_exporter" {
     }
     port {
       port = 9187
+      protocol = "TCP"
     }
-    type = "LoadBalancer"
   }
 }
 
+
+# resource "kubernetes_ingress_v1" "phd2_exporter_ingress" {
+#   metadata {
+#     name      = "phd2-exporter-ingress"
+#     namespace = kubernetes_namespace.astro.metadata.0.name
+#     annotations = {
+#       # "ingress.kubernetes.io/rewrite-target" = "/metrics",
+#     #   "traefik.frontend.rule.type" = "PathPrefix"
+#     }
+#   }
+
+#   spec {
+#     rule {
+#       http {
+#         path {
+#           path = "/"
+#           path_type = "Exact"
+#           backend {
+#             service {
+#               name = kubernetes_service.phd2_exporter.metadata.0.name
+#               port {
+#                 number = 9187
+#               }
+#             }
+#           }
+#         }
+#       }
+#     }
+#   }
+# }
 
 
