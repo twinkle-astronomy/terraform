@@ -27,7 +27,7 @@ resource "kubernetes_deployment" "indi_exporter" {
           image = "ghcr.io/twinkle-astronomy/indi_exporter:v0.1.3"
           image_pull_policy = "Always"
           command = ["indi_exporter",
-            "host.k3d.internal:7624",
+            "indi-server:7624",
           ]
           
           port {
