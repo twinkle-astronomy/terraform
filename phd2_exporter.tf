@@ -1,7 +1,7 @@
 
 
 locals {
-    config = templatefile("${path.module}/config/config.yaml", {phd2_host: "host.k3d.internal"})
+    config = templatefile("${path.module}/config/config.yaml", {phd2_host: "host.docker.internal"})
 }
 
 resource "kubernetes_config_map" "config_yaml" {
