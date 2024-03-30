@@ -67,6 +67,3 @@ resource "kubernetes_daemonset" "node_exporter" {
     }
   }
 }
-
-min(node_cpu_scaling_frequency_min_hertz)
-max(node_cpu_scaling_frequency_max_hertz)
