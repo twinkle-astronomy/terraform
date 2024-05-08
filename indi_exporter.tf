@@ -23,16 +23,16 @@ resource "kubernetes_deployment" "indi_exporter" {
       }
       spec {
         container {
-          name  = "indi-exporter"
-          image = "ghcr.io/twinkle-astronomy/indi_exporter:v0.1.3"
+          name              = "indi-exporter"
+          image             = "ghcr.io/twinkle-astronomy/indi_exporter:v0.1.3"
           image_pull_policy = "Always"
           command = ["indi_exporter",
             "indi-server:7624",
           ]
-          
+
           port {
             container_port = 9186
-            protocol = "TCP"
+            protocol       = "TCP"
           }
         }
       }

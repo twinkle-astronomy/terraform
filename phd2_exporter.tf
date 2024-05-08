@@ -1,7 +1,7 @@
 
 
 locals {
-    config = templatefile("${path.module}/config/config.yaml", {phd2_host: "host.docker.internal"})
+  config = templatefile("${path.module}/config/config.yaml", { phd2_host : "host.docker.internal" })
 }
 
 resource "kubernetes_config_map" "config_yaml" {
@@ -45,14 +45,14 @@ resource "kubernetes_deployment" "phd2_exporter" {
         }
 
         container {
-          name  = "phd2-exporter"
-          image = "ghcr.io/twinkle-astronomy/phd2_exporter:v0.3.0"
+          name              = "phd2-exporter"
+          image             = "ghcr.io/twinkle-astronomy/phd2_exporter:v0.3.0"
           image_pull_policy = "Always"
           command = ["phd2_exporter",
             "/etc/phd2_exporter/config.yaml",
           ]
           env {
-            name = "LOG"
+            name  = "LOG"
             value = "debug"
           }
 
@@ -63,7 +63,7 @@ resource "kubernetes_deployment" "phd2_exporter" {
 
           port {
             container_port = 9187
-            protocol = "TCP"
+            protocol       = "TCP"
           }
         }
       }
@@ -85,7 +85,7 @@ resource "kubernetes_service" "phd2_exporter" {
       name = "phd2-exporter"
     }
     port {
-      port = 9187
+      port     = 9187
       protocol = "TCP"
     }
   }
