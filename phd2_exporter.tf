@@ -1,7 +1,7 @@
 
 
 locals {
-  config = templatefile("${path.module}/config/config.yaml", { phd2_host : "host.docker.internal" })
+  config = templatefile("${path.module}/config/config.yaml", { phd2_host : "localhost" }) # "host.docker.internal" })
 }
 
 resource "kubernetes_config_map" "config_yaml" {
@@ -36,6 +36,7 @@ resource "kubernetes_deployment" "phd2_exporter" {
         }
       }
       spec {
+        host_network = true
 
         volume {
           name = "config-yaml"
