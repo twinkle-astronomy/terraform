@@ -25,7 +25,7 @@ resource "kubernetes_deployment" "indi_exporter" {
         container {
           name              = "indi-exporter"
           image             = "ghcr.io/twinkle-astronomy/indi_exporter:v0.1.3"
-          image_pull_policy = "Always"
+          image_pull_policy = "IfNotPresent"
           command = ["indi_exporter",
             "indi-server:7624",
           ]

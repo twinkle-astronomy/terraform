@@ -47,8 +47,8 @@ resource "kubernetes_deployment" "phd2_exporter" {
 
         container {
           name              = "phd2-exporter"
-          image             = "ghcr.io/twinkle-astronomy/phd2_exporter:v0.3.0"
-          image_pull_policy = "Always"
+          image             = "ghcr.io/twinkle-astronomy/phd2_exporter:v0.3.4"
+          image_pull_policy = "IfNotPresent"
           command = ["phd2_exporter",
             "/etc/phd2_exporter/config.yaml",
           ]

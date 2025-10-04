@@ -27,7 +27,7 @@ resource "kubernetes_stateful_set" "indi_server" {
         host_network = true
         container {
           name  = "indi-server"
-          image = "ghcr.io/twinkle-astronomy/indi_server:latest"
+          image = "ghcr.io/twinkle-astronomy/indi_server:v2.1.4-202506011144"
           security_context {
             privileged = true
           }
@@ -36,6 +36,7 @@ resource "kubernetes_stateful_set" "indi_server" {
           # image_pull_policy = "Always"
           command = ["indiserver",
             "-v",
+            "-f", "/indi/control.fifo",
             "-m", "1024",
             "-r", "0",
             "-d", "1024",
@@ -43,9 +44,12 @@ resource "kubernetes_stateful_set" "indi_server" {
             "indi_asi_ccd",
             "indi_asi_wheel",
             "indi_asi_focuser",
-            "indi_deepskydad_fp1",
+            #"indi_deepskydad_fp",  #indi_deepskydad_af1_focus  indi_deepskydad_af2_focus  indi_deepskydad_af3_focus  indi_deepskydad_fp         indi_deepskydad_fr1        
           ]
-
+          volume_mount {
+            name = "indi-control"
+            mount_path = "/indi"
+          }
           volume_mount {
             name       = "root-home"
             mount_path = "/root"
@@ -54,6 +58,13 @@ resource "kubernetes_stateful_set" "indi_server" {
             container_port = 7624
             protocol       = "TCP"
           }
+        }
+
+        volume {
+            name = "indi-control"
+            host_path {
+              path = "/indi"
+            }
         }
       }
     }

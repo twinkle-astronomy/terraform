@@ -26,6 +26,8 @@ resource "kubernetes_daemonset" "node_exporter" {
         container {
             name = "node-exporter"
             image = "prom/node-exporter"
+            image_pull_policy = "IfNotPresent"
+
             port {
                 container_port = 9100
                 protocol = "TCP"
